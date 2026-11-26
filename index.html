@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-skin="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>青野</title>
+<meta name="description" content="青野。一个抽屉式的页面：整理过的资料、随手写的字，都能点开。">
+<meta name="keywords" content="青野,资料,模板,工具">
+<meta name="theme-color" content="#f7f6f2">
+<meta property="og:type" content="website">
+<meta property="og:title" content="青野">
+<meta property="og:description" content="青野。一个抽屉式的页面：整理过的资料、随手写的字，都能点开。">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f6f2'/%3E%3Ctext x='32' y='44' font-family='Songti SC,SimSun,serif' font-size='34' fill='%233a3a3a' text-anchor='middle'%3E%E9%9D%92%3C/text%3E%3C/svg%3E">
+<!-- 先把皮肤定下来再画第一帧，避免深色用户看到一下白闪 -->
+<script>try{var k=localStorage.getItem('zzz513.skin');if(k==='paper'||k==='night')document.documentElement.setAttribute('data-skin',k)}catch(e){}</script>
+<link rel="stylesheet" href="./style.css?v=20261126">
+</head>
+<body>
+
+<div class="bg" id="bgLayer" aria-hidden="true"></div>
+<canvas class="sky" id="sky" aria-hidden="true"></canvas>
+<div class="scan" aria-hidden="true"></div>
+<div class="halo" id="halo" aria-hidden="true"></div>
+
+<main class="wrap">
+
+  <header class="masthead">
+    <div class="mast-left">
+      <span class="mark" id="avatar" aria-hidden="true"></span>
+      <span class="brand" id="siteTitle">青野</span>
+    </div>
+    <div class="mast-right">
+      <a class="mast-link" href="./fav/">收藏夹</a>
+      <a class="mast-link mast-link--tool" href="https://bilibili.zzz513.xyz"
+         target="_blank" rel="noopener noreferrer"
+         title="bilibili 视频转换 mp3（新窗口打开）">
+        <span class="tool-long">bilibili视频转换mp3</span>
+        <span class="tool-short">B站转 MP3</span>
+      </a>
+      <span class="year" id="mastYear">2026</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1 id="heroLine">写点东西，也做点能点开的东西。</h1>
+    <p class="lede" id="siteSubtitle">白天写前端，晚上整理旧文件。这个页面是我的抽屉，随手放，随手拿。</p>
+    <p class="bio" id="siteBio" hidden></p>
+  </section>
+
+  <section class="section" id="filesSection">
+    <div class="sec-head">
+      <h2><span class="dot" aria-hidden="true"></span>资料</h2>
+      <span class="count" id="fileCount"></span>
+    </div>
+
+    <div class="search">
+      <input id="searchInput" type="search" placeholder="搜名称、标签，或随便一个词" autocomplete="off" aria-label="搜索资料">
+      <button class="search-clear" id="searchClear" hidden aria-label="清空搜索">清空</button>
+    </div>
+
+    <nav class="tabs" id="catTabs" aria-label="按分类筛选"></nav>
+
+    <div class="list" id="fileList" aria-live="polite"></div>
+  </section>
+
+  <section class="section" id="commentSection" hidden>
+    <div class="sec-head">
+      <h2><span class="dot" aria-hidden="true"></span>留言</h2>
+      <select id="cmtScope" aria-label="留言范围"></select>
+      <span class="count" id="commentCount"></span>
+    </div>
+
+    <form class="note-form" id="cmtForm" autocomplete="off">
+      <div class="nf-row">
+        <input id="cmtName" type="text" maxlength="20" placeholder="怎么称呼（不填也行）">
+        <input id="cmtContact" type="text" maxlength="100" placeholder="邮箱或主页（不公开）">
+      </div>
+      <textarea id="cmtText" maxlength="1000" rows="3" placeholder="留一句。可以换行，链接会显示成「详情」。"></textarea>
+      <div class="nf-foot">
+        <div class="cap">
+          <span>验证 <b id="capQuestion">…</b></span>
+          <button type="button" id="capRefresh">换一题</button>
+          <input id="capAnswer" inputmode="numeric" maxlength="6" placeholder="答案" aria-label="验证码答案">
+        </div>
+        <button class="btn" type="submit" id="cmtSubmit">留一句</button>
+      </div>
+    </form>
+
+    <div class="notes" id="cmtList" aria-live="polite"></div>
+  </section>
+
+  <section class="section" id="linksSection">
+    <div class="sec-head">
+      <h2><span class="dot" aria-hidden="true"></span>找到我</h2>
+    </div>
+    <div class="contacts" id="linkList" aria-live="polite"></div>
+  </section>
+
+  <footer class="foot" id="foot">
+    <span id="footText">© 2026 青野</span>
+    <span class="foot-note">用 Cloudflare 搭的</span>
+  </footer>
+
+</main>
+
+<!-- 右下角：外观设置 + 91 按钮 -->
+<aside class="corner" id="corner" aria-label="外观与彩蛋">
+  <div class="corner-row">
+    <button class="icon-btn" id="skinBtn" type="button" aria-label="外观设置" aria-expanded="false" title="外观">
+      <svg viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+        <circle cx="10" cy="10" r="3.2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M10 1.6v2.2M10 16.2v2.2M1.6 10h2.2M16.2 10h2.2M4.1 4.1l1.6 1.6M14.3 14.3l1.6 1.6M15.9 4.1l-1.6 1.6M5.7 14.3l-1.6 1.6"
+              fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="btn91" id="btn91" type="button" title="劝你别点">
+      <b>91</b><span>别点</span>
+    </button>
+  </div>
+
+  <div class="skin-panel" id="skinPanel" hidden>
+    <div class="sp-head"><b>外观</b><button class="sp-x" id="skinClose" aria-label="关闭">×</button></div>
+
+    <div class="sp-field">
+      <span class="sp-label">皮肤</span>
+      <div class="seg" id="skinSeg">
+        <button type="button" data-skin="paper">纸白</button>
+        <button type="button" data-skin="night">深夜</button>
+      </div>
+    </div>
+
+    <div class="sp-field">
+      <span class="sp-label">背景</span>
+      <div class="sp-btns">
+        <label class="sp-file">照片<input type="file" id="bgImg" accept="image/*" hidden></label>
+        <label class="sp-file">视频<input type="file" id="bgVid" accept="video/*" hidden></label>
+        <button type="button" class="sp-plain" id="bgClear">恢复默认</button>
+      </div>
+    </div>
+
+    <p class="sp-note" id="bgNote">换的背景只存在这台设备上，不会上传，也不会影响别人。</p>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="./app.js?v=20261126" defer></script>
+</body>
+</html>

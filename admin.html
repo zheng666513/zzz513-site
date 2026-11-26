@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f7f6f2">
+<title>内容管理 · 青野</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f6f2'/%3E%3Ctext x='32' y='44' font-family='Songti SC,SimSun,serif' font-size='34' fill='%233a3a3a' text-anchor='middle'%3E%E9%9D%92%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="./admin.css?v=20261126">
+</head>
+<body>
+
+<!-- ===================== 登录 ===================== -->
+<div class="login-wrap" id="loginView">
+  <form class="login-card" id="loginForm" autocomplete="on">
+    <div class="login-avatar" aria-hidden="true">青</div>
+    <h1>后台</h1>
+    <p class="sub">这里是后台。密码在你自己手里。</p>
+
+    <div class="field">
+      <label class="label" for="password">密码</label>
+      <input class="input" type="password" id="password" name="password" autocomplete="current-password" placeholder="请输入后台密码" required>
+    </div>
+
+    <label class="check" for="remember">
+      <input type="checkbox" id="remember" checked>
+      <span>记住我（30 天免登录）</span>
+    </label>
+
+    <button class="btn btn-primary btn-block" type="submit" id="loginBtn">登录</button>
+    <p class="login-msg" id="loginMsg" role="alert"></p>
+
+    <div class="login-foot">
+      会话默认 7 天有效 · 连续输错 5 次锁定 15 分钟
+    </div>
+  </form>
+</div>
+
+<!-- ===================== 主界面 ===================== -->
+<div class="app" id="appView" hidden>
+  <div class="scrim" id="scrim"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="dot" aria-hidden="true">青</div>
+      <div>青野<small>内容管理</small></div>
+    </div>
+
+    <nav class="nav" id="nav">
+      <div class="nav-group">概览</div>
+      <button class="nav-item" data-view="dashboard">仪表盘</button>
+
+      <div class="nav-group">内容</div>
+      <button class="nav-item" data-view="resources">资料管理</button>
+      <button class="nav-item" data-view="files">文件库</button>
+      <button class="nav-item" data-view="categories">分类管理</button>
+      <button class="nav-item" data-view="tags">标签管理</button>
+      <button class="nav-item" data-view="comments">评论<span class="pill" id="navPending" hidden>0</span></button>
+
+      <div class="nav-group">数据</div>
+      <button class="nav-item" data-view="downloads">下载统计</button>
+      <button class="nav-item" data-view="logs">操作日志</button>
+      <button class="nav-item" data-view="egg">彩蛋</button>
+
+      <div class="nav-group">系统</div>
+      <button class="nav-item" data-view="settings">站点设置</button>
+      <button class="nav-item" data-view="backup">备份恢复</button>
+      <button class="nav-item" data-view="security">账号安全</button>
+    </nav>
+
+    <div class="side-foot">
+      <div id="sideLogin">上次登录：—</div>
+      <div>会话到期：<span id="sideExpire">—</span></div>
+    </div>
+  </aside>
+
+  <div class="content">
+    <header class="topbar">
+      <button class="btn btn-icon menu-btn" id="menuBtn" aria-label="打开菜单">☰</button>
+      <h1 class="page-title" id="pageTitle">仪表盘</h1>
+      <div class="spacer"></div>
+      <a class="btn btn-sm hide-sm" href="https://zzz513.xyz" target="_blank" rel="noopener">查看前台 ↗</a>
+      <button class="btn btn-sm" id="logoutBtn">退出</button>
+    </header>
+
+    <main id="view" class="view" aria-live="polite"></main>
+  </div>
+</div>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="modalRoot"></div>
+<div id="menuRoot"></div>
+
+<script src="./admin.js?v=20261126"></script>
+<script src="./admin-resources.js?v=20261126"></script>
+<script src="./admin-files.js?v=20261126"></script>
+<script src="./admin-more.js?v=20261126"></script>
+<script src="./admin-egg.js?v=20261126"></script>
+</body>
+</html>

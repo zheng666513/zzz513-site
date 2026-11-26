@@ -1,0 +1,1237 @@
+<!doctype html>
+<html lang="zh-CN" data-skin="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>我的收藏夹 · zzz513</title>
+<meta name="description" content="B 站公开收藏夹，按收藏时间排列。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23f7f6f2'/%3E%3Ctext x='32' y='44' font-family='Songti SC,SimSun,serif' font-size='34' fill='%233a3a3a' text-anchor='middle'%3E%E9%9D%92%3C/text%3E%3C/svg%3E">
+
+<!-- 首帧定皮肤，避免深夜用户白闪 -->
+<script>try{var k=localStorage.getItem('zzz513.skin');if(k==='paper'||k==='night')document.documentElement.setAttribute('data-skin',k)}catch(e){}</script>
+
+<!-- 卡片与栅格复用站点根目录的 fav.css，本页只补页骨架 -->
+<link rel="stylesheet" href="../fav.css">
+
+<style>
+/* ==========================================================================
+   本页新增，不改 fav.css
+   ========================================================================== */
+
+html[data-skin="night"] { color-scheme: dark; }
+
+/* fav.css 里卡片上浮是 3px，本页要求 4px：在这里覆盖，不改 fav.css */
+.card:hover,
+.card:focus-visible { transform: translateY(-4px); }
+
+/* ---------- 顶部导航 ---------- */
+.nav {
+  padding: 22px 0 0;
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: "Songti SC", "Source Han Serif SC", "Noto Serif SC", Georgia, serif;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.logo:hover { color: var(--sage-deep); }
+
+.logo::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--sage);
+  transform: translateY(-2px);
+}
+
+.theme-btn {
+  padding: 5px 14px;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-mid);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.theme-btn:hover {
+  color: var(--ink);
+  border-color: var(--sage);
+  background: color-mix(in srgb, var(--sage) 10%, transparent);
+}
+
+.theme-btn:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 3px;
+}
+
+/* ---------- 工具入口（与首页同一个开关） ---------- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tool-link {
+  padding: 5px 14px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  color: var(--sage-deep);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.tool-link:hover {
+  color: var(--paper);
+  background: var(--sage-deep);
+  border-color: var(--sage-deep);
+}
+
+.tool-link:focus-visible { outline: 2px solid var(--sage); outline-offset: 3px; }
+
+/* 后台关掉入口时用这个类隐藏 */
+.tool-hidden { display: none !important; }
+
+.tool-link .tool-short { display: none; }
+
+@media (max-width: 640px) {
+  .tool-link { padding: 4px 11px; font-size: 11.5px; }
+  .tool-link .tool-long { display: none; }
+  .tool-link .tool-short { display: inline; }
+}
+
+/* ---------- 标题区 ---------- */
+.head {
+  padding: 34px 0 0;
+}
+
+.head h1 {
+  margin: 0;
+  font-family: "Songti SC", "Source Han Serif SC", "Noto Serif SC", Georgia, serif;
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+.sync {
+  margin: 6px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+
+.head-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  flex-wrap: wrap;
+}
+
+.bili-link {
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.bili-link:hover {
+  color: var(--sage-deep);
+  border-bottom-color: var(--sage);
+}
+
+.bili-link:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 3px;
+}
+
+.sync .t {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 12.5px;
+}
+
+/* ---------- 工具栏 ---------- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.search-box {
+  position: relative;
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 9px 34px 9px 12px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  outline: none;
+  -webkit-appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-box input::placeholder { color: var(--ink-soft); }
+
+.search-box input:focus {
+  border-color: var(--sage);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--sage) 18%, transparent);
+}
+
+/* 去掉 Safari 自带的搜索叉，用自己那个 */
+.search-box input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.q-clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  transform: translateY(-50%);
+  font-size: 15px;
+  line-height: 1;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.q-clear:hover { color: var(--ink); background: var(--line); }
+.q-clear[hidden] { display: none; }
+
+.sort-box {
+  flex: 0 0 auto;
+}
+
+.sort-box select {
+  padding: 9px 30px 9px 11px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: border-color 0.2s ease;
+}
+
+.sort-box select:focus { border-color: var(--sage); }
+
+.stat {
+  margin-left: auto;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.stat b {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--ink-mid);
+}
+
+/* ---------- 分页 ---------- */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 26px 0 48px;
+}
+
+.pager:empty { display: none; }
+
+.pager button {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  font: inherit;
+  font-size: 12.5px;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--ink-mid);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.pager button:hover:not(:disabled):not(.on) {
+  color: var(--ink);
+  border-color: var(--sage);
+}
+
+.pager button.on {
+  color: var(--paper);
+  background: var(--sage-deep);
+  border-color: var(--sage-deep);
+  font-weight: 600;
+}
+
+.pager button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pager button:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 2px;
+}
+
+.pager .gap {
+  padding: 0 2px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* 分页按钮在窄屏收一点，别有 6 页就换行 */
+@media (max-width: 639px) {
+  .head { padding-top: 24px; }
+  .head h1 { font-size: 22px; }
+  .toolbar { padding: 16px 0 14px; }
+  /* 手机上让「排序」和「共 N 个」并成一行，别各占一行留白 */
+  .stat { margin-left: auto; width: auto; }
+  .pager button { min-width: 30px; height: 30px; }
+}
+
+/* ---------- 页脚 ---------- */
+.foot {
+  padding: 0 0 40px;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+/* ---------- 强制刷新按钮 ---------- */
+.head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 6px;
+}
+
+.refresh-btn {
+  padding: 4px 13px;
+  font: inherit;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--sage-deep);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  color: var(--paper);
+  background: var(--sage-deep);
+  border-color: var(--sage-deep);
+}
+
+.refresh-btn:disabled { opacity: 0.5; cursor: default; }
+.refresh-btn:focus-visible { outline: 2px solid var(--sage); outline-offset: 2px; }
+
+/* ---------- 人机认证弹窗 ---------- */
+.modal[hidden], .toast[hidden] { display: none !important; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(24, 28, 25, 0.42);
+}
+
+/* --card 本身是半透明（卡片效果），弹窗必须用不透明白底，
+   否则背后的封面会透上来干扰验证码 */
+.modal-card {
+  position: relative;
+  width: min(360px, 100%);
+  padding: 24px 24px 20px;
+  color: var(--ink);
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(20, 30, 24, 0.28);
+}
+
+html[data-skin="night"] .modal-card {
+  background: #171b22;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+}
+
+.modal-card h2 {
+  margin: 0;
+  font-family: "Songti SC", "Source Han Serif SC", Georgia, serif;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.modal-desc {
+  margin: 8px 0 18px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.modal-x {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  font-size: 19px;
+  line-height: 1;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.modal-x:hover { color: var(--ink); }
+
+.cap-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cap-img {
+  flex: 0 0 140px;
+  width: 140px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  background: #f4f2ec;
+}
+
+.cap-img svg { display: block; width: 140px; height: 48px; }
+.cap-loading { font-size: 12px; color: var(--ink-soft); }
+
+.cap-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 48px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  outline: none;
+}
+
+.cap-input:focus { border-color: var(--sage); }
+
+.modal-msg {
+  min-height: 18px;
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: #b4483f;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.modal-actions button {
+  padding: 7px 16px;
+  font: inherit;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.modal-cancel {
+  color: var(--ink-mid);
+  background: transparent;
+  border: 1px solid var(--line);
+}
+
+.modal-ok {
+  color: var(--paper);
+  background: var(--sage-deep);
+  border: 1px solid var(--sage-deep);
+}
+
+.modal-ok:disabled { opacity: 0.5; cursor: default; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  z-index: 95;
+  transform: translateX(-50%);
+  max-width: min(90vw, 420px);
+  padding: 10px 18px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--paper);
+  background: var(--sage-deep);
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(20, 30, 24, 0.2);
+}
+</style>
+</head>
+<body>
+
+<!-- 导航：Logo 回首页 + 主题切换 -->
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="../index.html">青野</a>
+    <div class="nav-actions">
+      <a class="tool-link" id="biliToolLink" href="https://bilibili.zzz513.xyz"
+         target="_blank" rel="noopener noreferrer"
+         title="bilibili 视频转换 mp3（新窗口打开）">
+        <span class="tool-long">bilibili视频转换mp3</span>
+        <span class="tool-short">B站转 MP3</span>
+      </a>
+      <button class="theme-btn" id="themeBtn" type="button">深夜</button>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- 标题区 -->
+  <header class="head">
+    <h1>我的收藏夹</h1>
+    <div class="head-row">
+      <p class="sync" id="syncLine">最后同步：<span class="t">—</span></p>
+      <div class="head-actions">
+        <a class="bili-link" href="https://space.bilibili.com/1265790247/favlist"
+           target="_blank" rel="noopener noreferrer">在 B 站打开 →</a>
+        <button class="refresh-btn" id="refreshBtn" type="button">强制刷新</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 工具栏 -->
+  <div class="toolbar">
+    <div class="search-box">
+      <input id="q" type="search" placeholder="搜标题或 UP 主" autocomplete="off"
+             spellcheck="false" aria-label="搜索收藏">
+      <button class="q-clear" id="qClear" type="button" aria-label="清空搜索" hidden>×</button>
+    </div>
+
+    <div class="sort-box">
+      <label class="sr-only" for="sort" hidden>排序</label>
+      <select id="sort" aria-label="排序方式">
+        <option value="desc">收藏时间 · 新到旧</option>
+        <option value="asc">收藏时间 · 旧到新</option>
+      </select>
+    </div>
+
+    <span class="stat" id="stat" aria-live="polite"></span>
+  </div>
+
+  <!-- 状态占位：失败 / 空 / 搜不到 -->
+  <p class="status" id="status" role="status" hidden></p>
+
+  <!-- 卡片 -->
+  <div class="grid" id="grid" aria-live="polite"></div>
+
+  <!-- 分页 -->
+  <nav class="pager" id="pager" aria-label="分页"></nav>
+
+</main>
+
+<footer class="wrap foot">© 2026 zzz513.xyz</footer>
+
+<!-- 强制刷新：图形验证码 -->
+<div class="modal" id="refreshModal" hidden>
+  <div class="modal-mask" data-close="1"></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="refreshTitle">
+    <button class="modal-x" id="refreshClose" type="button" aria-label="关闭">×</button>
+    <h2 id="refreshTitle">强制刷新收藏数据</h2>
+    <p class="modal-desc">输入下方字符，回源获取最新收藏并绕过浏览器缓存。看不清可点图片换一张。</p>
+    <div class="cap-row">
+      <div class="cap-img" id="captchaImg" title="点击换一张" role="button" tabindex="0"
+           aria-label="点击更换验证码"><span class="cap-loading">加载中…</span></div>
+      <input class="cap-input" id="captchaInput" type="text" maxlength="4"
+             placeholder="4 位字符" autocomplete="off" spellcheck="false"
+             aria-label="验证码">
+    </div>
+    <p class="modal-msg" id="refreshMsg" role="status"></p>
+    <div class="modal-actions">
+      <button class="modal-cancel" id="refreshCancel" type="button">取消</button>
+      <button class="modal-ok" id="refreshOk" type="button">确认刷新</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<!--
+  数据：由 sync_fav.py 每 2 小时生成。
+  这里不用静态 <script src>，而是在下面的 JS 里带 10 分钟一档的 v= 参数动态载入：
+  Cloudflare 自定义域会把 fav.js 的浏览器缓存强制设成 4 小时（zone 的 Browser Cache TTL
+  覆盖 Pages 的 _headers），带上变化的参数才能真正绕过缓存。
+  页面上的「强制刷新」则用当前毫秒时间戳载入，点一下立刻拿到最新数据。
+-->
+
+<script>
+(function () {
+  'use strict';
+
+  var PAGE_SIZE = 20;
+  var VIDEO_BASE = 'https://www.bilibili.com/video/';
+  var API_BASE = 'https://api.zzz513.xyz';
+  var captchaToken = '';
+
+  var state = {
+    all: [],          // 原始列表
+    view: [],         // 过滤 + 排序后
+    page: 1,
+    q: '',
+    sort: 'desc'
+  };
+
+  var el = {
+    grid: document.getElementById('grid'),
+    pager: document.getElementById('pager'),
+    status: document.getElementById('status'),
+    stat: document.getElementById('stat'),
+    sync: document.getElementById('syncLine'),
+    input: document.getElementById('q'),
+    clear: document.getElementById('qClear'),
+    sort: document.getElementById('sort'),
+    theme: document.getElementById('themeBtn'),
+    refresh: document.getElementById('refreshBtn'),
+    modal: document.getElementById('refreshModal'),
+    captchaImg: document.getElementById('captchaImg'),
+    captchaInput: document.getElementById('captchaInput'),
+    refreshMsg: document.getElementById('refreshMsg'),
+    refreshOk: document.getElementById('refreshOk'),
+    refreshCancel: document.getElementById('refreshCancel'),
+    refreshClose: document.getElementById('refreshClose'),
+    toast: document.getElementById('toast')
+  };
+
+  /* ---------------------------------------------------------------- 工具 */
+
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function fmtSync(sec) {
+    var n = Number(sec);
+    if (!n) return '—';
+    var d = new Date(n * 1000);
+    if (isNaN(d.getTime())) return '—';
+    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+           ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  function fmtDay(sec) {
+    var n = Number(sec);
+    if (!n) return '';
+    var d = new Date(n * 1000);
+    if (isNaN(d.getTime())) return '';
+    return pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+  }
+
+  /* fav.js 里写的是 /covers/xxx.jpg（站点根），本页在 /fav/ 下，补一个 .. */
+  function coverSrc(path) {
+    var p = String(path || '');
+    if (!p) return '';
+    if (p.indexOf('/covers/') === 0) return '..' + p;
+    return p;
+  }
+
+  function setStatus(text) {
+    if (!el.status) return;
+    el.status.textContent = text || '';
+    el.status.hidden = !text;
+  }
+
+  /* ---------------------------------------------------------------- 卡片 */
+
+  function coverNode(item) {
+    var box = document.createElement('div');
+    box.className = 'cover';
+
+    var img = document.createElement('img');
+    img.src = coverSrc(item.cover);
+    img.alt = '';
+    img.loading = 'lazy';
+    img.decoding = 'async';
+    img.referrerPolicy = 'no-referrer';
+
+    img.addEventListener('error', function () {
+      img.remove();
+      box.classList.add('is-empty');
+    }, { once: true });
+
+    box.appendChild(img);
+    return box;
+  }
+
+  function bodyNode(item) {
+    var body = document.createElement('div');
+    body.className = 'body';
+
+    var title = document.createElement('h2');
+    title.className = 'title';
+    title.textContent = item.title || '未命名视频';
+
+    var meta = document.createElement('p');
+    meta.className = 'meta';
+
+    var up = document.createElement('span');
+    up.className = 'up';
+    up.textContent = item.upper || '未知 UP 主';
+    meta.appendChild(up);
+
+    var day = fmtDay(item.fav_time);
+    if (day) {
+      var sep = document.createElement('span');
+      sep.className = 'sep';
+      sep.textContent = '·';
+      var time = document.createElement('span');
+      time.className = 'time';
+      time.textContent = day;
+      meta.appendChild(sep);
+      meta.appendChild(time);
+    }
+
+    body.appendChild(title);
+    body.appendChild(meta);
+    return body;
+  }
+
+  function cardNode(item) {
+    var a = document.createElement('a');
+    a.className = 'card';
+    a.href = VIDEO_BASE + encodeURIComponent(item.bvid || '');
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.setAttribute('aria-label', (item.title || '未命名视频') + '，在新标签页打开 B 站');
+    a.appendChild(coverNode(item));
+    a.appendChild(bodyNode(item));
+    return a;
+  }
+
+  /* ---------------------------------------------------------------- 过滤 */
+
+  function applyFilter() {
+    var q = state.q.trim().toLowerCase();
+    var rows = state.all;
+
+    if (q) {
+      rows = rows.filter(function (it) {
+        return (it.title || '').toLowerCase().indexOf(q) >= 0 ||
+               (it.upper || '').toLowerCase().indexOf(q) >= 0;
+      });
+    }
+
+    rows = rows.slice().sort(function (a, b) {
+      var d = (a.fav_time || 0) - (b.fav_time || 0);
+      return state.sort === 'asc' ? d : -d;
+    });
+
+    state.view = rows;
+  }
+
+  /* ---------------------------------------------------------------- 渲染 */
+
+  function renderGrid() {
+    var start = (state.page - 1) * PAGE_SIZE;
+    var rows = state.view.slice(start, start + PAGE_SIZE);
+
+    el.grid.textContent = '';
+
+    if (!rows.length) {
+      el.pager.textContent = '';
+      return;
+    }
+
+    var frag = document.createDocumentFragment();
+    rows.forEach(function (it) { frag.appendChild(cardNode(it)); });
+    el.grid.appendChild(frag);
+  }
+
+  function pagerNumbers(total, current) {
+    /* 1 … 4 5 6 … 10 这种，最多 7 个按钮 */
+    var out = [];
+    if (total <= 7) {
+      for (var i = 1; i <= total; i += 1) out.push(i);
+      return out;
+    }
+    out.push(1);
+    var from = Math.max(2, current - 1);
+    var to = Math.min(total - 1, current + 1);
+    if (from > 2) out.push('…');
+    for (var j = from; j <= to; j += 1) out.push(j);
+    if (to < total - 1) out.push('…');
+    out.push(total);
+    return out;
+  }
+
+  function renderPager() {
+    var total = Math.max(1, Math.ceil(state.view.length / PAGE_SIZE));
+    el.pager.textContent = '';
+
+    if (state.view.length <= PAGE_SIZE) return;
+
+    var mk = function (label, page, opts) {
+      opts = opts || {};
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = label;
+      if (opts.on) b.className = 'on';
+      if (opts.disabled) b.disabled = true;
+      if (opts.aria) b.setAttribute('aria-label', opts.aria);
+      if (opts.on) b.setAttribute('aria-current', 'page');
+      if (!opts.disabled && !opts.on) {
+        b.addEventListener('click', function () { goPage(page); });
+      }
+      return b;
+    };
+
+    el.pager.appendChild(mk('上一页', state.page - 1, {
+      disabled: state.page <= 1, aria: '上一页'
+    }));
+
+    pagerNumbers(total, state.page).forEach(function (n) {
+      if (n === '…') {
+        var gap = document.createElement('span');
+        gap.className = 'gap';
+        gap.textContent = '…';
+        el.pager.appendChild(gap);
+      } else {
+        el.pager.appendChild(mk(String(n), n, {
+          on: n === state.page, aria: '第 ' + n + ' 页'
+        }));
+      }
+    });
+
+    el.pager.appendChild(mk('下一页', state.page + 1, {
+      disabled: state.page >= total, aria: '下一页'
+    }));
+  }
+
+  function renderStat() {
+    var total = state.all.length;
+    var matched = state.view.length;
+
+    el.stat.textContent = '';
+
+    var b = document.createElement('b');
+    b.textContent = String(total);
+    el.stat.appendChild(b);
+    el.stat.appendChild(document.createTextNode(' 个收藏'));
+
+    if (state.q.trim() && matched !== total) {
+      el.stat.appendChild(document.createTextNode(' · 匹配 ' + matched + ' 个'));
+    }
+  }
+
+  /* ---------------------------------------------------------------- URL */
+
+  function readUrl() {
+    var p = new URLSearchParams(location.search);
+    var page = parseInt(p.get('page') || '1', 10);
+    var sort = p.get('sort') === 'asc' ? 'asc' : 'desc';
+    var q = p.get('search') || '';
+
+    state.page = isNaN(page) || page < 1 ? 1 : page;
+    state.sort = sort;
+    state.q = q;
+
+    el.input.value = q;
+    el.sort.value = sort;
+    el.clear.hidden = !q;
+  }
+
+  function writeUrl(mode) {
+    var p = new URLSearchParams();
+    if (state.page > 1) p.set('page', String(state.page));
+    if (state.q.trim()) p.set('search', state.q.trim());
+    if (state.sort !== 'desc') p.set('sort', state.sort);
+
+    var qs = p.toString();
+    var url = location.pathname + (qs ? '?' + qs : '');
+    history[mode === 'push' ? 'pushState' : 'replaceState'](
+      { page: state.page, q: state.q, sort: state.sort }, '', url
+    );
+  }
+
+  /* ---------------------------------------------------------------- 动作 */
+
+  function renderAll() {
+    applyFilter();
+
+    var total = Math.max(1, Math.ceil(state.view.length / PAGE_SIZE));
+    if (state.page > total) state.page = total;
+    if (state.page < 1) state.page = 1;
+
+    if (!state.all.length) {
+      setStatus('暂无收藏');
+    } else if (!state.view.length) {
+      setStatus('没有找到相关内容');
+    } else {
+      setStatus('');
+    }
+
+    renderGrid();
+    renderPager();
+    renderStat();
+  }
+
+  function goPage(n) {
+    var total = Math.max(1, Math.ceil(state.view.length / PAGE_SIZE));
+    var next = Math.min(Math.max(1, n), total);
+    if (next === state.page) return;
+
+    state.page = next;
+    renderAll();
+    writeUrl('push');
+
+    /* 平滑回到内容区顶部，别让用户翻完还停在页脚 */
+    var top = el.grid.getBoundingClientRect().top + window.pageYOffset - 90;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+
+  function onSearchInput() {
+    el.clear.hidden = !el.input.value;
+    state.q = el.input.value;
+    state.page = 1;
+    renderAll();
+    writeUrl('replace');
+  }
+
+  var timer = 0;
+  function onSearchTyping() {
+    clearTimeout(timer);
+    el.clear.hidden = !el.input.value;
+    /* 300ms 防抖：打字期间不动 DOM，停手才过滤 */
+    timer = setTimeout(onSearchInput, 300);
+  }
+
+  function onSortChange() {
+    state.sort = el.sort.value === 'asc' ? 'asc' : 'desc';
+    state.page = 1;
+    renderAll();
+    writeUrl('push');
+  }
+
+  function clearSearch() {
+    el.input.value = '';
+    state.q = '';
+    state.page = 1;
+    el.clear.hidden = true;
+    renderAll();
+    writeUrl('replace');
+    el.input.focus();
+  }
+
+  /* ---------------------------------------------------------------- 强制刷新 */
+
+  var toastTimer = 0;
+  function showToast(text) {
+    if (!el.toast) return;
+    el.toast.textContent = text;
+    el.toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { el.toast.hidden = true; }, 3200);
+  }
+
+  function modalMsg(text) {
+    if (el.refreshMsg) el.refreshMsg.textContent = text || '';
+  }
+
+  function setRefreshBusy(busy) {
+    if (el.refreshOk) {
+      el.refreshOk.disabled = busy;
+      el.refreshOk.textContent = busy ? '刷新中…' : '确认刷新';
+    }
+    if (el.refresh) el.refresh.disabled = busy;
+  }
+
+  function loadCaptcha() {
+    captchaToken = '';
+    el.captchaImg.innerHTML = '<span class="cap-loading">加载中…</span>';
+    modalMsg('');
+    fetch(API_BASE + '/api/captcha/image', { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (d) {
+        if (d.code !== 0 || !d.data || !d.data.svg) {
+          throw new Error((d && d.message) || '验证码加载失败');
+        }
+        captchaToken = d.data.token;
+        el.captchaImg.innerHTML = d.data.svg;
+        el.captchaInput.value = '';
+        el.captchaInput.focus();
+      })
+      .catch(function (e) {
+        el.captchaImg.innerHTML = '<span class="cap-loading">加载失败，点击重试</span>';
+        modalMsg('验证码加载失败：' + e.message);
+      });
+  }
+
+  function openRefresh() {
+    el.modal.hidden = false;
+    loadCaptcha();
+  }
+
+  function closeRefresh() {
+    el.modal.hidden = true;
+    modalMsg('');
+  }
+
+  /* 带时间戳重新取 fav.js，绕过浏览器和 CDN 的缓存 */
+  function reloadData() {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      var settled = false;
+      s.src = '../fav.js?ts=' + Date.now();
+      s.onload = function () {
+        if (settled) return;
+        settled = true;
+        var d = window.FAV_DATA;
+        if (s.parentNode) s.parentNode.removeChild(s);
+        if (!d || !Array.isArray(d.list)) { reject(new Error('数据格式异常')); return; }
+        resolve(d);
+      };
+      s.onerror = function () {
+        if (settled) return;
+        settled = true;
+        if (s.parentNode) s.parentNode.removeChild(s);
+        reject(new Error('数据加载失败'));
+      };
+      document.head.appendChild(s);
+    });
+  }
+
+  function applyData(data) {
+    state.all = data.list;
+    el.sync.innerHTML = '最后同步：<span class="t">' + fmtSync(data.updated) + '</span>';
+    renderAll();
+  }
+
+  function submitRefresh() {
+    var answer = (el.captchaInput.value || '').trim().toUpperCase();
+    if (!captchaToken) { modalMsg('验证码还没加载好，请稍候'); return; }
+    if (!/^[A-Z0-9]{4}$/.test(answer)) { modalMsg('请输入 4 位验证码'); return; }
+
+    modalMsg('');
+    setRefreshBusy(true);
+    fetch(API_BASE + '/api/fav/refresh', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ token: captchaToken, answer: answer })
+    })
+      .then(function (r) {
+        return r.json()
+          .catch(function () { throw new Error('HTTP ' + r.status); })
+          .then(function (d) {
+            if (!r.ok || !d || d.code !== 0) {
+              throw new Error((d && d.message) || '刷新失败（HTTP ' + r.status + '）');
+            }
+            return d.data;
+          });
+      })
+      .then(function (info) {
+        var before = (window.FAV_DATA && Number(window.FAV_DATA.updated)) || 0;
+        return reloadData().then(function (data) {
+          var newer = Number(info.updated) > before;
+          applyData(data);
+          closeRefresh();
+          showToast((newer ? '已载入新数据：' : '已是最新数据：') +
+            data.list.length + ' 条 · ' + fmtSync(data.updated));
+        });
+      })
+      .catch(function (e) {
+        modalMsg(e.message || String(e));
+        loadCaptcha();   /* 失败即换一张，避免拿同一张反复试 */
+      })
+      .then(function () { setRefreshBusy(false); });
+  }
+
+  function initRefresh() {
+    if (!el.refresh || !el.modal) return;
+    el.refresh.addEventListener('click', openRefresh);
+    el.refreshOk.addEventListener('click', submitRefresh);
+    el.refreshCancel.addEventListener('click', closeRefresh);
+    el.refreshClose.addEventListener('click', closeRefresh);
+    el.modal.querySelector('[data-close]').addEventListener('click', closeRefresh);
+    el.captchaImg.addEventListener('click', loadCaptcha);
+    el.captchaImg.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loadCaptcha(); }
+    });
+    el.captchaInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') submitRefresh();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !el.modal.hidden) closeRefresh();
+    });
+  }
+
+  /* 页眉工具入口：与首页共用后台「站点设置」里的同一个开关 */
+  function initBiliTool() {
+    var link = document.getElementById('biliToolLink');
+    if (!link) return;
+    fetch(API_BASE + '/api/site', { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (d) {
+        var site = (d && d.data && d.data.site) || {};
+        link.classList.toggle('tool-hidden', site.biliToolEnabled === false);
+      })
+      .catch(function () {
+        /* 接口异常时保持默认显示，别让入口莫名其妙消失 */
+      });
+  }
+
+  /* ---------------------------------------------------------------- 主题 */
+
+  function syncThemeLabel() {
+    var night = document.documentElement.getAttribute('data-skin') === 'night';
+    el.theme.textContent = night ? '纸白' : '深夜';
+    el.theme.setAttribute('aria-pressed', night ? 'true' : 'false');
+  }
+
+  function initTheme() {
+    el.theme.addEventListener('click', function () {
+      var night = document.documentElement.getAttribute('data-skin') === 'night';
+      var next = night ? 'paper' : 'night';
+      document.documentElement.setAttribute('data-skin', next);
+      try { localStorage.setItem('zzz513.skin', next); } catch (e) {}
+      syncThemeLabel();
+    });
+    syncThemeLabel();
+  }
+
+  /* ---------------------------------------------------------------- 启动 */
+
+  function boot() {
+    initTheme();
+    initBiliTool();
+    initRefresh();
+    readUrl();
+
+    var data = window.FAV_DATA;
+
+    if (!data || !Array.isArray(data.list)) {
+      el.sync.innerHTML = '最后同步：<span class="t">—</span>';
+      setStatus('数据加载失败');
+      el.stat.textContent = '';
+      return;
+    }
+
+    applyData(data);
+
+    el.input.addEventListener('input', onSearchTyping);
+    el.clear.addEventListener('click', clearSearch);
+    el.sort.addEventListener('change', onSortChange);
+
+    /* 前进 / 后退：把页码、搜索词、排序一起还原 */
+    window.addEventListener('popstate', function () {
+      readUrl();
+      renderAll();
+    });
+  }
+
+  /* 带版本号取数据：10 分钟一档，既绕过 4 小时的强制浏览器缓存，
+     又不会让每次刷新都回源。「强制刷新」另用毫秒时间戳，立刻拿最新版。 */
+  function loadInitialData() {
+    var s = document.createElement('script');
+    var settled = false;
+    s.src = '../fav.js?v=' + Math.floor(Date.now() / 600000);
+    s.onload = s.onerror = function () {
+      if (settled) return;
+      settled = true;
+      if (s.parentNode) s.parentNode.removeChild(s);
+      boot();
+    };
+    document.head.appendChild(s);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadInitialData);
+  } else {
+    loadInitialData();
+  }
+})();
+</script>
+
+</body>
+</html>

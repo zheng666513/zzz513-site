@@ -1,0 +1,13 @@
+# Cloudflare Pages 响应头
+# 目的：fav.js 是脚本产物，每 2 小时会变；Pages 默认给静态资源 4 小时缓存，
+# 浏览器拿着旧文件，表现为「收藏夹一直不更新」。这里压到 60 秒。
+# 封面按 bvid 命名，内容永不改变，可以放心长缓存。
+
+/fav.js
+  Cache-Control: public, max-age=60, must-revalidate
+
+/covers/*
+  Cache-Control: public, max-age=31536000, immutable
+
+*.html
+  Cache-Control: public, max-age=0, must-revalidate

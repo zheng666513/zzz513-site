@@ -1,0 +1,295 @@
+/* ==========================================================================
+   收藏夹卡片
+   1) 颜色全部走变量，切 <html data-skin="paper|night"> 即可换肤
+   2) 栅格用 auto-fill + minmax，靠 --card-min 把列数钉在 2 / 3 / 4
+   ========================================================================== */
+
+/* ---------- 纸白（默认） ---------- */
+:root {
+  --paper: #f7f6f2;
+  --ink: #3a3a3a;
+  --ink-mid: #6b6862;
+  --ink-soft: #8e8b85;
+  --sage: #a3b5a0;
+  --sage-deep: #5f7359;
+  --card: rgba(255, 255, 255, 0.7);
+  --line: rgba(0, 0, 0, 0.06);
+  --cover-bg: #e8e5dd;
+  --shadow-rest: 0 2px 6px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 14px 30px rgba(0, 0, 0, 0.13);
+  --r: 12px;
+
+  /* 桌面 4 列：100% / 4 - 间隙的三份 */
+  --card-min: calc(25% - 9px);
+}
+
+/* ---------- 深夜 ---------- */
+html[data-skin="night"] {
+  --paper: #05070c;
+  --ink: #e9e6df;
+  --ink-mid: #a8a6a0;
+  --ink-soft: #74726d;
+  --sage: #35e0ff;
+  --sage-deep: #8af0ff;
+  --card: rgba(12, 16, 23, 0.7);
+  --line: rgba(120, 190, 230, 0.16);
+  --cover-bg: #0b1119;
+  --shadow-rest: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-hover: 0 16px 34px rgba(0, 0, 0, 0.6);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 15px;
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.wrap {
+  width: min(1200px, 100% - 32px);
+  margin: 0 auto;
+}
+
+/* ---------- 头部 ---------- */
+.top { padding: 56px 0 24px; }
+
+.top-inner {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.top-inner h1 {
+  margin: 0;
+  font-family: "Songti SC", "Source Han Serif SC", "Noto Serif SC", Georgia, serif;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.count {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.skin-btn {
+  margin-left: auto;
+  padding: 4px 12px;
+  font: inherit;
+  font-size: 12px;
+  color: var(--ink-mid);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.skin-btn:hover {
+  color: var(--ink);
+  border-color: var(--sage);
+}
+
+/* ==========================================================================
+   栅格
+   auto-fill + minmax 自动排，--card-min 决定一行能放几个：
+     桌面 25%  → 4 列
+     平板 33%  → 3 列
+     手机 50%  → 2 列
+   减去的那几像素是 gap 占位，不减会掉到 3 列 / 1 列
+   ========================================================================== */
+.grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min), 1fr));
+  padding-bottom: 40px;
+}
+
+/* ==========================================================================
+   卡片：整张就是一个 <a>，所以封面 / 标题 / UP 名点击行为天然一致
+   ========================================================================== */
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-rest);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* 右键「在新标签页打开」靠的是 a 的 href，不是 JS */
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  border-color: var(--sage);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 3px;
+}
+
+/* ---------- 封面 ---------- */
+.cover {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--cover-bg);
+  flex: 0 0 auto;
+}
+
+.cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 关键：图片不能吃掉点击，否则 a 的跳转不触发 */
+  pointer-events: none;
+  transition: transform 0.2s ease;
+}
+
+.card:hover .cover img,
+.card:focus-visible .cover img {
+  transform: scale(1.03);
+}
+
+/* 图挂了就占位，不留一块碎图 */
+.cover.is-empty::after {
+  content: "封面加载失败";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  background: var(--cover-bg);
+}
+
+/* ---------- 文字 ---------- */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 11px 12px 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  /* 最多两行，超出省略号 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.55em * 2);
+  transition: color 0.2s ease;
+}
+
+.card:hover .title { color: var(--sage-deep); }
+
+.meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  min-width: 0;
+}
+
+/* UP 名可以被压缩，时间不压缩：窄卡片上先牺牲名字，日期始终看得见 */
+.meta .up {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meta .sep,
+.meta .time { flex: 0 0 auto; }
+
+.meta .sep { opacity: 0.5; }
+
+/* ---------- 空 / 失败 ---------- */
+.status {
+  margin: 0 0 18px;
+  padding: 46px 0;
+  text-align: center;
+  font-size: 13.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  border: 1px dashed var(--line);
+  border-radius: var(--r);
+}
+
+.status[hidden] { display: none; }
+
+/* ---------- 页脚 ---------- */
+.foot {
+  padding: 0 0 44px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.foot code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--line);
+}
+
+/* ==========================================================================
+   断点：只改 --card-min，栅格规则一条都不重复写
+   ========================================================================== */
+@media (max-width: 1023px) {
+  :root { --card-min: calc(33.333% - 8px); }   /* 3 列 */
+}
+
+@media (max-width: 639px) {
+  :root { --card-min: calc(50% - 6px); }       /* 2 列 */
+  .top { padding-top: 34px; }
+  .top-inner h1 { font-size: 18px; }
+  .title { font-size: 13px; }
+  .body { padding: 10px 11px 11px; }
+  /* 卡片太窄，一行放不下「UP 名 · 收藏于 11-22」，去掉前缀只留日期 */
+  .meta .tp { display: none; }
+}
+
+/* 系统层面关掉动效时，别再上下浮 */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .cover img,
+  .title { transition: none; }
+  .card:hover { transform: none; }
+  .card:hover .cover img { transform: none; }
+}
