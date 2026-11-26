@@ -1079,6 +1079,20 @@ html[data-skin="night"] .modal-card {
     });
   }
 
+  /* 触发同步后，等线上时间戳变大：每 10 秒探一次，最多 tries 次 */
+  function waitForFresh(before, tries) {
+    if (tries <= 0) return Promise.resolve(null);
+    var again = function () {
+      return new Promise(function (r) { setTimeout(r, 10000); })
+        .then(function () { return waitForFresh(before, tries - 1); });
+    };
+    return reloadData()
+      .then(function (d) {
+        return Number(d.updated) > before ? d : again();
+      })
+      .catch(again);
+  }
+
   function applyData(data) {
     state.all = data.list;
     el.sync.innerHTML = '最后同步：<span class="t">' + fmtSync(data.updated) + '</span>';
@@ -1109,6 +1123,22 @@ html[data-skin="night"] .modal-card {
       })
       .then(function (info) {
         var before = (window.FAV_DATA && Number(window.FAV_DATA.updated)) || 0;
+
+        /* 后端已经触发 GitHub Actions：等它跑完（约 2 分钟）再刷新 */
+        if (info && info.triggered) {
+          modalMsg('已触发同步，正在等 GitHub 跑完（约 2 分钟）…');
+          return waitForFresh(before, 24).then(function (data) {
+            closeRefresh();
+            if (data) {
+              applyData(data);
+              showToast('已更新：' + data.list.length + ' 条 · ' + fmtSync(data.updated));
+            } else {
+              showToast('同步已排队，稍后刷新页面看结果');
+            }
+          });
+        }
+
+        /* 没配 GitHub 令牌时退化成「只重新读线上文件」 */
         return reloadData().then(function (data) {
           var newer = Number(info.updated) > before;
           applyData(data);
