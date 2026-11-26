@@ -1245,7 +1245,8 @@ html[data-skin="night"] .modal-card {
   function loadInitialData() {
     var s = document.createElement('script');
     var settled = false;
-    s.src = '../fav.js?v=' + Math.floor(Date.now() / 600000);
+    /* 每次都用新地址，避免 4 小时浏览器缓存把「最后同步」显示成旧时间 */
+    s.src = '../fav.js?ts=' + Date.now();
     s.onload = s.onerror = function () {
       if (settled) return;
       settled = true;
